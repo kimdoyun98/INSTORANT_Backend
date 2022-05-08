@@ -74,6 +74,7 @@ docs/_build/
 #secretdata
 Crawling_TestVersion/secret_data.ini
 Restaurant_recommend/hide.ini
+.idea
 
 # PyBuilder
 target/
