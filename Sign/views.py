@@ -5,27 +5,27 @@ from rest_framework.views import APIView
 from .models import User_Infomation
 
 
-class SignIn(APIView):
-    def post(self, request):
+# class SignIn(APIView):
+#     def post(self, request):
+#
+#
+#         data = self.request.data
+#         user_id = data["user_id"]
+#         user_pw = data["user_pw"]
+#         try:
+#             user = auth.authenticate(username=user_id, password=user_pw)
+#
+#             if user is not None:
+#                 auth.login(request, user)
+#                 return Response({'msg': '로그인 성공', 'data': user_id})
+#         except:
+#             return Response(dict(msg="로그인 실패"))
 
 
-        data = self.request.data
-        user_id = data["user_id"]
-        user_pw = data["user_pw"]
-        try:
-            user = auth.authenticate(username=user_id, password=user_pw)
-
-            if user is not None:
-                auth.login(request, user)
-                return Response({'msg': '로그인 성공', 'data': user_id})
-        except:
-            return Response(dict(msg="로그인 실패"))
-
-
-class SignOut(APIView):
-    def get(self, request):
-        logout(request)
-        return Response({'msg': '로그아웃'})
+# class SignOut(APIView):
+#     def get(self, request):
+#         logout(request)
+#         return Response({'msg': '로그아웃'})
 
 
 class SignUp(APIView):
