@@ -29,7 +29,7 @@ def Crawling(name_list):
             time.sleep(10)
             driver.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div[1]/div/div/div[1]/div[1]/a').click()
             time.sleep(5)
-            print(name)
+            T.append(name)
             for i in range(9):
                 print(i)
                 user_ids = driver.find_elements_by_class_name("ZIAjV")
