@@ -29,9 +29,7 @@ def Crawling(name_list):
             time.sleep(10)
             driver.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div[1]/div/div/div[1]/div[1]/a').click()
             time.sleep(5)
-            T.append(name)
             for i in range(9):
-                print(i)
                 user_ids = driver.find_elements_by_class_name("ZIAjV")
                 count = -1
                 for user_id in user_ids:
@@ -50,7 +48,6 @@ def Crawling(name_list):
                 try:
                     tags = driver.find_elements_by_class_name('xil3i')
                     for tag in tags:
-                        print(tag.text)
                         T.append(tag.text)
                 except:
                     pass
@@ -64,7 +61,9 @@ def Crawling(name_list):
                     driver.find_element_by_xpath('/html/body/div[6]/div[2]/div/div[2]/button').click()
                     time.sleep(2)
 
+            #중복 태그 제거
             Deduplication_T = list(set(T))
+            Deduplication_T.insert(0, name)
             Tags.append(Deduplication_T)
 
         except:
@@ -83,3 +82,23 @@ for cate in mycol.find({}, {"_id": 0,"Name": 1, "Score": 1}):
         name_list.append(cate['Name'])
 
 Tags = Crawling(name_list)
+String_Tags = [] #최종 Tags
+
+#TODO Tags list 합치기
+for i in range(len(Tags)):
+    Sum_Tags = ''
+    count, Temporary = 0, []
+    for j in Tags[i]:
+        if count == 0: #가게명
+            Temporary.append(j)
+            count += 1
+        else: # Tag
+            Sum_Tags += j
+    Temporary.append(Sum_Tags)
+    String_Tags.append(Temporary)
+
+#DB저장
+for String_Tag in String_Tags:
+    myquery = {"Name": String_Tag[0]}
+    Tag_values = {"$set": {"Tag": String_Tag[1]}}
+    mycol.update_one(myquery, Tag_values)
