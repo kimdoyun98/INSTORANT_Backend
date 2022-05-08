@@ -6,7 +6,7 @@ import os
 basedir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(basedir)
 
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(interpolation=None)
 config.read('hide.ini')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,11 +39,11 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ( #로그인 여부 확인
+    'DEFAULT_PERMISSION_CLASSES': (  # 로그인 여부 확인
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',#로그인 관련 클래스를 JWT로 설정
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 장고 3.X에서만 지원, 로그인 관련 클래스를 JWT로 설정
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
