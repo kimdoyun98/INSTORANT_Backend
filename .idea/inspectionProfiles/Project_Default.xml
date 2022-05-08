@@ -1,0 +1,24 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="restfulapiserver.restfulapiserver.urls.addresses" />
+          <option value="community.*" />
+          <option value="chatbotmovie.chatbotmovie.urls.movie" />
+          <option value="movie.views" />
+          <option value="django.conf.urls.url" />
+          <option value="webtoon.signup.models.Userinfo.*" />
+          <option value="webtoon.todo.models.TODO.objects" />
+          <option value="webtoon.todo.models.signup" />
+          <option value="Gatehomepage.Login.models.User_info.objects" />
+          <option value="Gatehomepage.Gatehomepage.urls.Login" />
+          <option value="Todolist.Sign.models.User_Info.objects" />
+          <option value="Todolist.todo_board.models.Main_Todo.objects" />
+          <option value="Todolist.board.models.Main_Todo.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
