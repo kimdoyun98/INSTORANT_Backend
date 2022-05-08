@@ -81,7 +81,8 @@ for cate in mycol.find({}, {"_id": 0,"Name": 1, "Score": 1, "Tag": 1}):
     if cate['Score'] != "" and cate['Tag'] == "":
         name_list.append(cate['Name'])
 
-Tags = Crawling(name_list)
+#print(len(name_list))
+Tags = Crawling(name_list[:130])
 String_Tags = [] #최종 Tags
 
 #TODO Tags list 합치기
