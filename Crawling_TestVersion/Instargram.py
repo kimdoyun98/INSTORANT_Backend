@@ -77,8 +77,8 @@ mycol = mydb['Cheonan']
 
 name_list = []
 #다이닝코드에서 받아온 천안 음식점 목록
-for cate in mycol.find({}, {"_id": 0,"Name": 1, "Score": 1}):
-    if cate['Score'] != "":
+for cate in mycol.find({}, {"_id": 0,"Name": 1, "Score": 1, "Tag": 1}):
+    if cate['Score'] != "" and cate['Tag'] == "":
         name_list.append(cate['Name'])
 
 Tags = Crawling(name_list)
