@@ -5,6 +5,7 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Sign.urls')),
+    path('search/', include('Search.urls')),
     path('api/token/', obtain_jwt_token),  # JWT 토큰을 발행할 때 사용
     path('api/token/verify/', verify_jwt_token),  # JWT 토큰이 유효한 지 검증
     path('api/token/refresh/', refresh_jwt_token),  # JWT 토큰을 갱신할 때 사용
