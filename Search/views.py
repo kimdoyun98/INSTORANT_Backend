@@ -7,10 +7,6 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from Mongo import mycol
 
 
-# ToDO/ 카테고리 2개 이상일 때
-#     /  ex) 술집, 밥집
-
-
 @permission_classes([AllowAny])
 class Search(APIView):
     def post(self, request):
