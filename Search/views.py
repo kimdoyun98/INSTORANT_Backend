@@ -211,7 +211,6 @@ class Search(APIView):
     def response(self, recommend_list, restaurant_list):
         for restaurant in restaurant_list.sort('Score', -1):
             recommend_list.append(restaurant)
-        print(recommend_list)
         return Response({'data': recommend_list})
 
     def response_tag(self, data, recommend_list, restaurant_list):
@@ -230,5 +229,4 @@ class Search(APIView):
         # restaurant_list = temp_storage
         for restaurant in restaurant_list:
             recommend_list.append(restaurant)
-        print(recommend_list)
         return Response({'data': recommend_list})
