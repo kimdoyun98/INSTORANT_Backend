@@ -22,8 +22,8 @@ class Search(APIView):
         search_data = request.data.get('search_data')
         location = request.data.get('location')
         category = request.data.get('category')
-        recommend_list = []
 
+        recommend_list = []
         if location:
             if category:
                 if search_data:
@@ -44,7 +44,7 @@ class Search(APIView):
                             restaurant_list = mycol.find({'City': city, 'Category': category,
                                                           'Name': {'$regex': title_tag}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
-
+                        print("# 위치 + 가게명 or Tag + 위치 정보, 카테고리")
                         return self.response(recommend_list, restaurant_list)
 
                     except ValueError:  # 위치, 가게명, 태그 + 위치 정보, 카테고리
@@ -68,12 +68,14 @@ class Search(APIView):
                                 restaurant_list = mycol.find({"City": location_split[1], 'Category': category,
                                                               "Name": {'$regex': search_data}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
+                        print("위치, 가게명, 태그 + 위치 정보, 카테고리")
                         return self.response(recommend_list, restaurant_list)
 
                 else:  # 검색창 비었을 때
                     location_split = list(location.split(" "))
                     restaurant_list = mycol.find({"City": location_split[1], "Category": category},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
+                    print("위치, 카테고리 O / 검색창 비었을 때")
                     return self.response(recommend_list, restaurant_list)
 
             else:  # location O, category X
@@ -92,7 +94,7 @@ class Search(APIView):
                     else:  # 가게명
                         restaurant_list = mycol.find({'City': city, 'Name': {'$regex': title_tag}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
-
+                    print("위치 + 가게명 or Tag + 위치 정보")
                     return self.response(recommend_list, restaurant_list)
 
                 except ValueError:  # 위치, 가게명, 태그 + 위치 정보
@@ -116,6 +118,7 @@ class Search(APIView):
                             restaurant_list = mycol.find({"City": location_split[1],
                                                           "Name": {'$regex': search_data}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
+                    print("위치, 가게명, 태그 + 위치 정보")
                     return self.response(recommend_list, restaurant_list)
 
         else:  # location X
@@ -138,7 +141,7 @@ class Search(APIView):
                             restaurant_list = mycol.find({'City': city, 'Category': category,
                                                           'Name': {'$regex': title_tag}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
-
+                        print("위치 + 가게명 or Tag + 카테고리")
                         return self.response(recommend_list, restaurant_list)
 
                     except ValueError:  # 위치, 가게명, 태그  + 카테고리
@@ -161,11 +164,13 @@ class Search(APIView):
                                 restaurant_list = mycol.find({'Category': category,
                                                               "Name": {'$regex': search_data}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
+                        print("위치, 가게명, 태그  + 카테고리")
                         return self.response(recommend_list, restaurant_list)
                 # 검색창 비었을 때
                 else:
                     restaurant_list = mycol.find({'Category': category},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
+                    print("위치X 카테고리 O / 검색창 비었을 때")
                     return self.response(recommend_list, restaurant_list)
             # category X
             else:
@@ -185,7 +190,7 @@ class Search(APIView):
                     else:
                         restaurant_list = mycol.find({'City': city, 'Name': {'$regex': title_tag}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
-
+                    print("위치 + 가게명 or Tag")
                     return self.response(recommend_list, restaurant_list)
 
                 except ValueError:  # 위치, 가게명, 태그
@@ -206,11 +211,16 @@ class Search(APIView):
                         else:
                             restaurant_list = mycol.find({"Name": {'$regex': search_data}},
                                                          {"_id": 1, "Name": 1, "Image": 1, "Score": 1})
+                    print("마지막 response")
                     return self.response(recommend_list, restaurant_list)
 
     def response(self, recommend_list, restaurant_list):
         for restaurant in restaurant_list.sort('Score', -1):
             recommend_list.append(restaurant)
+        # print("start")
+        # for i in recommend_list:
+        #     print(i)
+        # print("end")
         return Response({'data': recommend_list})
 
     def response_tag(self, data, recommend_list, restaurant_list):
