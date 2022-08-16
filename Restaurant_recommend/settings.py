@@ -22,7 +22,7 @@ SECRET_KEY = config['SECRET']['KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-AUTH_USER_MODEL = 'Sign.User_Infomation'
+#AUTH_USER_MODEL = 'Sign.SignUserInfomation'
 
 # Application definition
 
@@ -36,27 +36,27 @@ INSTALLED_APPS = [
     'rest_framework',
     'Sign',
     'Search',
-
+    'Detail_info',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (  # 로그인 여부 확인
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 장고 3.X에서만 지원, 로그인 관련 클래스를 JWT로 설정
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (  # 로그인 여부 확인
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 장고 3.X에서만 지원, 로그인 관련 클래스를 JWT로 설정
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.BasicAuthentication',
+#     ),
+# }
 
-JWT_AUTH = {
-    'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_ALGORITHM': 'HS256', # JWT 암호화에 사용되는 알고리즘
-    'JWT_ALLOW_REFRESH': True, # JWT 토큰을 갱신할 수 있게 할지 여부
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
-}
+# JWT_AUTH = {
+#     'JWT_SECRET_KEY': SECRET_KEY,
+#     'JWT_ALGORITHM': 'HS256', # JWT 암호화에 사용되는 알고리즘
+#     'JWT_ALLOW_REFRESH': True, # JWT 토큰을 갱신할 수 있게 할지 여부
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
