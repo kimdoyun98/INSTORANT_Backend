@@ -10,19 +10,20 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from Mongo import mycol
 
 
-@permission_classes([AllowAny])
+#@permission_classes([AllowAny])
 class Test(APIView):
     def post(self, request):
 
         return Response({'Name': "Hi"})
 
-@permission_classes([AllowAny])
+#@permission_classes([AllowAny])
 class Search(APIView):
     def post(self, request):
         search_data = request.data.get('search_data')
         location = request.data.get('location')
         category = request.data.get('category')
-
+        print(search_data)
+        print("search_data : ", search_data, "location : ", location, "category : ", category)
         recommend_list = []
         if location:
             if category:
@@ -217,10 +218,10 @@ class Search(APIView):
     def response(self, recommend_list, restaurant_list):
         for restaurant in restaurant_list.sort('Score', -1):
             recommend_list.append(restaurant)
-        # print("start")
-        # for i in recommend_list:
-        #     print(i)
-        # print("end")
+        print("start")
+        for i in recommend_list:
+             print(i)
+        print("end")
         return Response({'data': recommend_list})
 
     def response_tag(self, data, recommend_list, restaurant_list):
