@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'Sign',
     'Search',
-    'Detail_info',
 ]
 
 # REST_FRAMEWORK = {
