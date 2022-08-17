@@ -1,3 +1,5 @@
+# 계정 관련 API
+
 import jwt
 from django.contrib.auth.hashers import check_password
 from rest_framework.response import Response
@@ -5,12 +7,9 @@ from rest_framework.views import APIView
 
 from .Serializer import Sign_Serializer
 from .models import UserInfomation
-from rest_framework.decorators import permission_classes, authentication_classes, api_view
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
-#@permission_classes([AllowAny])
+# 로그인 API
 class SignIn(APIView):
     def post(self, request):
         data = self.request.data
@@ -22,12 +21,13 @@ class SignIn(APIView):
             return Response({"msg": "아이디가 없습니다."})
         if check_password(password, user.password):
             access_token = jwt.encode({"username": username, "name": user.name}, "secret", algorithm='HS256')
+            # 유효기간 - 'exp' : datetime.utcnow() + timedelta(days=3)
             return Response({"token": access_token, "msg": "success"})
         else:
             return Response({"msg": "비밀번호가 틀림"})
 
 
-#@permission_classes([AllowAny])
+# 회원가입 API
 class SignUp(APIView):
     def post(self, request):
         serializers = Sign_Serializer(data=request.data)
@@ -40,26 +40,12 @@ class SignUp(APIView):
             return Response({'msg': '등록 완료'})
 
 
-#@permission_classes([AllowAny])
+# 아이디 중복 확인 API
 class IDCheck(APIView):
     def post(self, request):
-        print("IDCHeck")
-        print(request.data["username"])
         name = request.data["username"]
-        serializers = Sign_Serializer(data=request.data)
 
         if UserInfomation.objects.filter(username=name).exists():
             return Response({'msg': '이미 존재하는 아이디 입니다.'})
         else:
             return Response({'msg': '사용 가능한 아이디입니다.'})
-
-
-#@permission_classes([AllowAny])
-class Test(APIView):
-    def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
-        print(username, password)
-        print(request.data)
-
-        return Response({'status': 404})

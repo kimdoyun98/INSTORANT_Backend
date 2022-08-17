@@ -1,12 +1,9 @@
 import jwt
-import json
-
 from django.http import JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
-
 from Sign.models import UserInfomation
 
 
+# Token 인증
 def login_check(func):
     def wrapper(self, request, *args, **kwargs):
         try:
@@ -20,6 +17,9 @@ def login_check(func):
 
         except UserInfomation.DoesNotExist:
             return JsonResponse({'message': 'INVALID USER'}, status=400)
+
+        except jwt.ExpiredSignatureError:
+            return JsonResponse({"message": "EXPIRED_TOKEN"}, status=400)
 
         return func(self, request, *args, **kwargs)
 
