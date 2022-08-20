@@ -21,3 +21,17 @@ class UserInfomation(models.Model):
         db_table = 'user_infomation'
 
 
+class UserReview(models.Model):
+    review_id = models.AutoField(primary_key=True)
+    username = models.ForeignKey(UserInfomation, models.DO_NOTHING, db_column='username')
+    restaurant_id = models.CharField(max_length=30)
+    content = models.TextField(blank=True, null=True)
+    image1 = models.CharField(max_length=255, blank=True, null=True)
+    image2 = models.CharField(max_length=255, blank=True, null=True)
+    image3 = models.CharField(max_length=255, blank=True, null=True)
+    score = models.IntegerField(blank=True, null=True)
+    date_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_review'
