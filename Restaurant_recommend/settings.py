@@ -105,6 +105,7 @@ DATABASES = {
         'PASSWORD': config['SECRET']['PASSWORD'],
         'HOST': config['SECRET']['HOST'],
         'PORT': config['SECRET']['PORT'],
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 

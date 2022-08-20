@@ -29,37 +29,40 @@ def Crawling(name_list):
             time.sleep(10)
             driver.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div[1]/div/div/div[1]/div[1]/a').click()
             time.sleep(5)
-            for i in range(9):
-                user_ids = driver.find_elements_by_class_name("ZIAjV")
-                count = -1
-                for user_id in user_ids:
-                    if user_id.text == user_ids[1].text and count > 0:
-                        more_comment = '/html/body/div[6]/div[3]/div/article/div/div[2]/div/div/div[2]/div[1]/ul/ul[' + str(
-                            count) + ']/li/ul/li/div/button'
+            try:
+                for i in range(9):
+                    user_ids = driver.find_elements_by_class_name("ZIAjV")
+                    count = -1
+                    for user_id in user_ids:
+                        if user_id.text == user_ids[1].text and count > 0:
+                            more_comment = '/html/body/div[6]/div[3]/div/article/div/div[2]/div/div/div[2]/div[1]/ul/ul[' + str(
+                                count) + ']/li/ul/li/div/button'
 
-                        try:
-                            driver.find_element_by_xpath(more_comment).click()
-                            time.sleep(5)
-                        except:
-                            pass
+                            try:
+                                driver.find_element_by_xpath(more_comment).click()
+                                time.sleep(5)
+                            except:
+                                pass
+                            break
+                        count += 1
+                    #Tag가 없을 때
+                    try:
+                        tags = driver.find_elements_by_class_name('xil3i')
+                        for tag in tags:
+                            T.append(tag.text)
+                    except:
+                        pass
+
+                    if i == 8:
                         break
-                    count += 1
-                #Tag가 없을 때
-                try:
-                    tags = driver.find_elements_by_class_name('xil3i')
-                    for tag in tags:
-                        T.append(tag.text)
-                except:
-                    pass
-
-                if i == 8:
-                    break
-                elif i == 0:
-                    driver.find_element_by_xpath('/html/body/div[6]/div[2]/div/div/button').click()
-                    time.sleep(2)
-                else:
-                    driver.find_element_by_xpath('/html/body/div[6]/div[2]/div/div[2]/button').click()
-                    time.sleep(2)
+                    elif i == 0:
+                        driver.find_element_by_xpath('/html/body/div[6]/div[2]/div/div/button').click()
+                        time.sleep(2)
+                    else:
+                        driver.find_element_by_xpath('/html/body/div[6]/div[2]/div/div[2]/button').click()
+                        time.sleep(2)
+            except:
+                pass
 
             #중복 태그 제거
             Deduplication_T = list(set(T))
