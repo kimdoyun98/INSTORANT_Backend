@@ -3,13 +3,16 @@
 # 2022.08.17 update
 
 import jwt
+from datetime import datetime
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from Detail_info.Serializer import Review_Serializer
 from Restaurant_recommend.utils import login_check
 
 from Mongo import mycol
-from Sign.models import UserFavorite, UserInfomation
+from Sign.models import UserFavorite, UserInfomation, UserReview
 
 
 # 상세정보 API
@@ -68,3 +71,45 @@ class Favorite_List(APIView):
                                             {"_id": 1, "Name": 1, "Image": 1, "Score": 1}))
 
         return Response({'data': restaurant_list})
+
+
+# 리뷰(댓글) 조회, 삽입, 삭제
+class Review(APIView):
+    def get(self, request):  # 전체 조회
+        review_data = UserReview.objects.all()
+        serializers = Review_Serializer(review_data, many=True)
+
+        return Response({"data": serializers.data})
+
+    @login_check
+    def put(self, request):  # 삽입
+        content = request.data.get("content")
+        restaurant_id = request.data.get("restaurant_id")
+
+        access_token = request.headers.get('Authorization', None)
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+
+        user = UserInfomation.objects.get(username=payload['username'])
+
+        time = datetime.now()
+        time = time.strftime("%Y-%m-%d %H:%M:%S")
+        UserReview.objects.create(username=user, restaurant_id=restaurant_id, content=content, date_time=time)
+
+        review_data = UserReview.objects.all()
+
+        serializers = Review_Serializer(review_data, many=True)
+        return Response({'data': serializers.data})
+
+    @login_check
+    def post(self, request):  # 삭제
+        reviewid = request.data.get("review_id")
+
+        access_token = request.headers.get('Authorization', None)
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+
+        UserReview.objects.get(review_id=reviewid, username=payload['username']).delete()
+
+        review_data = UserReview.objects.all()
+        serializers = Review_Serializer(review_data, many=True)
+
+        return Response({'data': serializers.data})
