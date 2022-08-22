@@ -2,7 +2,7 @@
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from Mongo import mycol
+from Common.Mongo import mycol
 
 
 class Search(APIView):
@@ -27,9 +27,10 @@ class Search(APIView):
                             del data[0]
                             for i in range(len(data)):
                                 data[i] = "#" + data[i]
+
                             restaurant_list = mycol.find({'City': city, 'Category': category,
                                                           "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                             # Tag 가 여러 개일 때
                             if len(data) != 1:
                                 return self.response_tag(data, recommend_list, restaurant_list)
@@ -57,7 +58,7 @@ class Search(APIView):
                                     data[i] = "#" + data[i]
                                 restaurant_list = mycol.find({'City': location_split[1], 'Category': category,
                                                               "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                                 if len(data) != 1:  # Tag 가 여러 개일 때
                                     return self.response_tag(data, recommend_list, restaurant_list)
                             # 가게명 검색
@@ -89,7 +90,7 @@ class Search(APIView):
                         for i in range(len(data)):
                             data[i] = "#" + data[i]
                         restaurant_list = mycol.find({'City': city, "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                         # Tag 가 여러 개일 때
                         if len(data) != 1:
                             return self.response_tag(data, recommend_list, restaurant_list)
@@ -118,7 +119,7 @@ class Search(APIView):
                                 data[i] = "#" + data[i]
                             restaurant_list = mycol.find({'City': location_split[1],
                                                           "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                             # Tag 가 여러 개일 때
                             if len(data) != 1:
                                 return self.response_tag(data, recommend_list, restaurant_list)
@@ -146,7 +147,7 @@ class Search(APIView):
                                 data[i] = "#" + data[i]
                             restaurant_list = mycol.find({'City': city, 'Category': category,
                                                           "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                             # Tag 가 여러 개일 때
                             if len(data) != 1:
                                 return self.response_tag(data, recommend_list, restaurant_list)
@@ -174,7 +175,7 @@ class Search(APIView):
                                     data[i] = "#" + data[i]
                                 restaurant_list = mycol.find({'Category': category,
                                                               "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                                 if len(data) != 1:  # Tag 가 여러 개일 때
                                     return self.response_tag(data, recommend_list, restaurant_list)
                             # 가게명 검색
@@ -203,7 +204,7 @@ class Search(APIView):
                         for i in range(len(data)):
                             data[i] = "#" + data[i]
                         restaurant_list = mycol.find({'City': city, "Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
                         # Tag 가 여러 개일 때
                         if len(data) != 1:
                             return self.response_tag(data, recommend_list, restaurant_list)
@@ -228,8 +229,12 @@ class Search(APIView):
                             del data[0]
                             for i in range(len(data)):
                                 data[i] = "#"+data[i]
+                            print(data[0])
                             restaurant_list = mycol.find({"Tag": {'$regex': data[0]}},
-                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1}).sort('Score', -1)
+                                                         {"_id": 1, "Name": 1, "Image": 1, "Score": 1, "Tag": 1}).sort('Score', -1)
+
+                            print(data)
+
                             # Tag 가 여러 개일 때
                             if len(data) != 1:
                                 return self.response_tag(data, recommend_list, restaurant_list)
@@ -249,19 +254,21 @@ class Search(APIView):
 
     # Tag 포함 검색어
     def response_tag(self, data, recommend_list, restaurant_list):
-        # temp_storage = []
-        # for i in restaurant_list:
-        #     for j in range(1, len(data)):  # 첫번재 태그 이후 태그들
-        #         if i['Tag'].find(data[j]) != -1:
-        #             if i in temp_storage:  # 중복 제거
-        #                 pass
-        #             else:
-        #                 temp_storage.append(i)
-        #         else:
-        #             if j != 1:  # 두번 째 태그가 없으면 추가된 Document가 없음으로 pass
-        #                 del temp_storage[-1]  # 태그들 중 하나라도 없으면 제외
-        #             break
-        # restaurant_list = temp_storage
+        temp_storage = []
+        for i in restaurant_list:
+            for j in range(1, len(data)):  # 첫번재 태그 이후 태그들
+                if i['Tag'].find(data[j]) != -1:
+                    if i in temp_storage:  # 중복 제거
+                        pass
+                    else:
+                        temp_storage.append(i)
+                else:
+                    if j != 1:  # 두번 째 태그가 없으면 추가된 Document가 없음으로 pass
+                        del temp_storage[-1]  # 태그들 중 하나라도 없으면 제외
+                    break
+
+        restaurant_list = temp_storage
+
         for restaurant in restaurant_list:
             recommend_list.append(restaurant)
         return Response({'data': recommend_list})

@@ -35,3 +35,16 @@ class UserReview(models.Model):
     class Meta:
         managed = False
         db_table = 'user_review'
+
+
+class DayRecommends(models.Model):
+    restaurant_id = models.CharField(max_length=30)
+    city = models.CharField(max_length=45)
+    category = models.CharField(max_length=45)
+    image = models.CharField(max_length=255)
+    address = models.CharField(max_length=45)
+    name = models.CharField(max_length=45)
+
+    class Meta:
+        managed = False
+        db_table = 'day_recommends'

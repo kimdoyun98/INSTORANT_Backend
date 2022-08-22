@@ -1,6 +1,6 @@
 # 작성자-김도윤
 # 상세페이지에서 작동하는 기능 API
-# 2022.08.17 update
+# 2022.08.21 update
 
 import jwt
 from datetime import datetime
@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from Detail_info.Serializer import Review_Serializer
 from Restaurant_recommend.utils import login_check
 
-from Mongo import mycol
+from Common.Mongo import mycol
 from Sign.models import UserFavorite, UserInfomation, UserReview
 
 
@@ -23,7 +23,8 @@ class Detail (APIView):
         user_fav = UserFavorite.objects.filter(username=username, favor_id=mongo_id).exists()
 
         restaurant = mycol.find_one({'_id': mongo_id},
-                                    {'_id': 0, 'Address': 1, "Name": 1, "Image": 1, "Score": 1, 'Menu': 1, 'Tag': 1})
+                                    {'_id': 0, 'Address': 1, "Name": 1, "Image": 1,
+                                     "Score": 1, 'Tell_number': 1, 'Tag': 1})
 
         if user_fav is False:
             restaurant["fav"] = False

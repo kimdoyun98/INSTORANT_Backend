@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'Sign',
     'Search',
     'Detail_info',
+    'Map',
+    'Common',
+    'Day_recommend'
 ]
 
 # REST_FRAMEWORK = {
